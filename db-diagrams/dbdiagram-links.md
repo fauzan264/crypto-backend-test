@@ -1,0 +1,1 @@
+https://dbdiagram.io/d/crypto-backend-test-67a5286c263d6cf9a04f5351
