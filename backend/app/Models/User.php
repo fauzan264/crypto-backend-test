@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasUuids;
 
     /**
      * The attributes that are mass assignable.
@@ -64,5 +66,15 @@ class User extends Authenticatable
     public function GetJWTCustomClaim()
     {
         return [];
+    }
+
+    public static function GetRegistrationsByMonth($month, $year)
+    {
+        $query = self::selectRaw("YEAR(created_at) as year, MONTH(created_at) as month, COUNT(id) as total")
+                    ->whereRaw("MONTH(created_at) = ? AND YEAR(created_at) = ?", [$month, $year])
+                    ->groupByRaw("YEAR(created_at), MONTH(created_at)")
+                    ->get();
+        
+        return $query;
     }
 }
