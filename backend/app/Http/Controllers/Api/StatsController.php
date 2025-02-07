@@ -7,48 +7,79 @@ use App\Http\Resources\BaseResource;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class StatsController extends Controller
 {
     public function registrations(Request $request)
     {
-        $month = $request->query('month');
-        $year = $request->query('year');
+        $request_id = uniqid("req_", true);
+        try {
+            $validator = Validator::make($request->all(), [
+                'month'=> 'integer|min:1|max:12',
+                'year' => 'integer|digits:4',
+            ]);
 
-        // if input is empty, default to the current month
-        if (empty($month)) {
-            $month = date('m');
+            if ($validator->fails()) {
+                return response()->json([
+                    'success'       => false,
+                    'message'       => $validator->errors()->first(),
+                    'request_id'    => $request_id,
+                ], 400);
+            }
+
+            $month = $request->query('month', date('m'));
+            $year = $request->query('year', date('Y'));
+    
+            $total_registrations = User::getRegistrationsByMonth($month, $year);
+    
+            $response = new BaseResource(true, 'Total registered data', $total_registrations);
+            return $response;
+
+        } catch (\Exception $e) {
+            Log::error("[$request_id]". $e->getMessage());
+
+            return response()->json([
+                'status'        => false,
+                'message'       => 'Internal server error',
+                'request_id'    => $request_id,
+            ], 500);
         }
-
-        // if input is empty, default to the current year
-        if (empty($year)) {
-            $year = date('Y');
-        }
-
-        $total_registrations = User::getRegistrationsByMonth($month, $year);
-
-        $response = new BaseResource(true, 'Total registered data', $total_registrations);
-        return $response;
     }
 
     public function deposits(Request $request)
     {
-        $month = $request->query('month');
-        $year = $request->query('year');
+        $request_id = uniqid("req_", true);
+        try {
+            $validator = Validator::make($request->all(), [
+                'month'=> 'integer|min:1|max:12',
+                'year' => 'integer|digits:4',
+            ]);
 
-        // if input is empty, default to the current month
-        if (empty($month)) {
-            $month = date('m');
+            if ($validator->fails()) {
+                return response()->json([
+                    'success'       => false,
+                    'message'       => $validator->errors()->first(),
+                    'request_id'    => $request_id,
+                ], 400);
+            }
+            
+            $month = $request->query('month', date('m'));
+            $year = $request->query('year', date('Y'));
+    
+            $total_deposits = Transaction::GetDepositsByMonth($month, $year);
+    
+            $response = new BaseResource(true, 'Total deposit data', $total_deposits);
+            return $response;
+
+        } catch (\Exception $e) {
+            Log::error("[$request_id]". $e->getMessage());
+            return response()->json([
+                'status'    => false,
+                'message'   => 'Internal server error',
+                'request_id'=> $request_id,
+            ]);
         }
-
-        // if input is empty, default to teh current month
-        if (empty($year)) {
-            $year = date('Y');
-        }
-
-        $total_deposits = Transaction::GetDepositsByMonth($month, $year);
-
-        $response = new BaseResource(true, 'Total deposit data', $total_deposits);
-        return $response;
     }
 }
