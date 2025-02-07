@@ -70,10 +70,10 @@ class User extends Authenticatable
 
     public static function GetRegistrationsByMonth($month, $year)
     {
-        $query = self::selectRaw("YEAR(created_at) as year, MONTH(created_at) as month, COUNT(id) as total")
+        $query = self::selectRaw("MONTH(created_at) as month, YEAR(created_at) as year, COUNT(id) as total")
                     ->whereRaw("MONTH(created_at) = ? AND YEAR(created_at) = ?", [$month, $year])
                     ->groupByRaw("YEAR(created_at), MONTH(created_at)")
-                    ->get();
+                    ->first();
         
         return $query;
     }
