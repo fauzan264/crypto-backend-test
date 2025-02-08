@@ -29,6 +29,11 @@ class Transaction extends Model
         return $this->hasMany(TransactionTypes::class, "type", "name");
     }
 
+    public function transactionStatus(): HasMany
+    {
+        return $this->hasMany(TransactionStatus::class, "status", "name");
+    }
+
     public static function GetDepositsByMonth($month, $year)
     {
         $query = self::selectRaw("MONTH(created_at) as month, YEAR(created_at) as year, SUM(amount) as total")

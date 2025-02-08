@@ -24,6 +24,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('type')->on('transaction_types')->references('name');
+            $table->foreign('status')->on('transaction_status')->references('name');
         });
     }
 
