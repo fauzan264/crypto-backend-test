@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('user_id');
-            $table->string('deposit_id');
-            $table->string('asset');
-            $table->integer('amount', false, true);
-            $table->string('type');
-            $table->string('status');
-            $table->uuid('created_by');
-            $table->uuid('updated_by');
+            $table->uuid('user_id')->nullable(false);
+            $table->string('deposit_id', 50)->nullable(false);
+            $table->string('asset', 10)->nullable(false);
+            $table->integer('amount', false, true)->nullable(false);
+            $table->string('type', 20)->nullable(false);
+            $table->string('status', 20)->nullable(false);
+            $table->uuid('created_by')->nullable(false);
+            $table->uuid('updated_by')->nullable();
             $table->timestamps();
         });
     }
