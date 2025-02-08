@@ -26,8 +26,8 @@ class StatsController extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'success'       => false,
-                    'message'       => $validator->errors()->first(),
-                    'request_id'    => $request_id,
+                    'message'       => 'Failed to fetch total registered data.',
+                    'errors'        => $validator->errors(),
                 ], 400);
             }
 
@@ -37,11 +37,11 @@ class StatsController extends Controller
             $total_registrations = User::getRegistrationsByMonth($month, $year);
             if (!$total_registrations) {
                 return (new BaseResource(false, 'Data Not Found', null))
-                ->response()
-                ->setStatusCode(404);
+                    ->response()
+                    ->setStatusCode(404);
             }
 
-            $response = (new BaseResource(true, 'Total registered data', $total_registrations))->response();
+            $response = (new BaseResource(true, 'Total registered data fetched successfully.', $total_registrations))->response();
             return $response;
 
         } catch (\Exception $e) {
@@ -67,8 +67,8 @@ class StatsController extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'success'       => false,
-                    'message'       => $validator->errors()->first(),
-                    'request_id'    => $request_id,
+                    'message'       => 'Failed to retrieve total deposit data.',
+                    'errors'        => $validator->errors(),
                 ], 400);
             }
             
@@ -78,11 +78,11 @@ class StatsController extends Controller
             $total_deposits = Transaction::GetDepositsByMonth($month, $year);
             if (!$total_deposits) {
                 return (new BaseResource(false, 'Data Not Found', null))
-                ->response()
-                ->setStatusCode(404);
+                    ->response()
+                    ->setStatusCode(404);
             }
     
-            $response = (new BaseResource(true, 'Total deposit data', $total_deposits))->response();
+            $response = (new BaseResource(true, 'Total deposit data fetched successfully.', $total_deposits))->response();
             return $response;
 
         } catch (\Exception $e) {
