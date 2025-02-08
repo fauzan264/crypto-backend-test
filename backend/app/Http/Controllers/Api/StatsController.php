@@ -6,13 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\BaseResource;
 use App\Models\Transaction;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class StatsController extends Controller
 {
-    public function registrations(Request $request)
+    public function registrations(Request $request): JsonResponse
     {
         $request_id = uniqid("req_", true);
         try {
@@ -48,7 +49,7 @@ class StatsController extends Controller
         }
     }
 
-    public function deposits(Request $request)
+    public function deposits(Request $request): JsonResponse
     {
         $request_id = uniqid("req_", true);
         try {
