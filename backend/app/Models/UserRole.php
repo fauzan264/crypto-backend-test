@@ -10,9 +10,11 @@ class UserRole extends Model
 {
     use HasUuids;
     protected $primaryKey = "id";
-    protected $keyType = "uuid";
+    protected $keyType = "string";
     protected $table = "user_roles";
+    public $incrementing = false;
     public $timestamps = true;
+    protected $fillable = ["id", "name", "created_by", "updated_by"];
 
     public function user(): BelongsTo
     {
