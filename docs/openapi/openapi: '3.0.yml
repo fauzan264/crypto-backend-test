@@ -1,0 +1,69 @@
+openapi: '3.0.3'
+info:
+    title: Crypto Rest API
+    version: '1.0'
+servers:
+    - url: http://localhost:8000/api/v1
+paths:
+    /stats/registrations:
+        get:
+            parameters:
+                - name: month
+                  in: query
+                  required: false
+                  description: month
+                  schema:
+                    type: string
+                - name: year
+                  in: query
+                  required: false
+                  description: year
+                  schema:
+                    type: string
+            responses:
+                200:
+                    description: Get total registration
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetTotalResponse'
+    /stats/deposits:
+        get:
+            parameters:
+                - name: month
+                  in: query
+                  required: false
+                  description: month
+                  schema:
+                    type: string
+                - name: year
+                  in: query
+                  required: false
+                  description: year
+                  schema:
+                    type: string
+            responses:
+                200:
+                    description: Get total deposit
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetTotalResponse'
+components:
+    schemas:
+        GetTotalResponse:
+            type: object
+            properties:
+                status:
+                    type: string
+                message:
+                    type: string
+                data:
+                    type: object
+                    properties:
+                        month:
+                            type: number
+                        year:
+                            type: number
+                        total:
+                            type: string
