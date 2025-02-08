@@ -54,6 +54,11 @@ class User extends Authenticatable
         return $this->hasMany(UserRole::class, "user_role_id", "id");
     }
 
+    public function userStatus(): HasMany
+    {
+        return $this->hasMany(UserStatus::class, "status", "name");
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT
      * 

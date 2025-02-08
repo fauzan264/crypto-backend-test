@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name')->nullable(false);
             $table->string('username')->nullable(false);
-            $table->string('email')->nullable(false)->unique();
+            $table->string('email')->nullable(false)->unique("user_email_unique");
             $table->string('password_hash')->nullable(false);
             $table->string('status', 50);
             $table->uuid('user_role_id');
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('user_role_id')->on('user_roles')->references('id');
+            $table->foreign('status')->on('user_status')->references('name');
         });
 
     }
