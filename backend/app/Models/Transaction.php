@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Number;
 use NumberFormatter;
 
@@ -22,6 +23,11 @@ class Transaction extends Model
         'created_by',
         'updated_by',
     ];
+
+    public function transactionTypes(): HasMany
+    {
+        return $this->hasMany(TransactionTypes::class, "type", "name");
+    }
 
     public static function GetDepositsByMonth($month, $year)
     {
