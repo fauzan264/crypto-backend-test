@@ -40,8 +40,10 @@ class Transaction extends Model
                     ->groupByRaw("YEAR(created_at), MONTH(created_at)")
                     ->first();
 
-        $formatter = new NumberFormatter('id_ID', NumberFormatter::CURRENCY);
-        $query->total = $formatter->formatCurrency($query->total, "IDR");
+        if ($query) {
+            $formatter = new NumberFormatter('id_ID', NumberFormatter::CURRENCY);
+            $query->total = $formatter->formatCurrency($query->total, "IDR");
+        }
 
         return $query;
     }

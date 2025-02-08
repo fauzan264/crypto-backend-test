@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\BaseResource;
 use App\Models\Transaction;
 use App\Models\User;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -34,8 +35,13 @@ class StatsController extends Controller
             $year = $request->query('year', date('Y'));
     
             $total_registrations = User::getRegistrationsByMonth($month, $year);
-    
-            $response = new BaseResource(true, 'Total registered data', $total_registrations);
+            if (!$total_registrations) {
+                return (new BaseResource(false, 'Data Not Found', null))
+                ->response()
+                ->setStatusCode(404);
+            }
+
+            $response = (new BaseResource(true, 'Total registered data', $total_registrations))->response();
             return $response;
 
         } catch (\Exception $e) {
@@ -70,8 +76,13 @@ class StatsController extends Controller
             $year = $request->query('year', date('Y'));
     
             $total_deposits = Transaction::GetDepositsByMonth($month, $year);
+            if (!$total_deposits) {
+                return (new BaseResource(false, 'Data Not Found', null))
+                ->response()
+                ->setStatusCode(404);
+            }
     
-            $response = new BaseResource(true, 'Total deposit data', $total_deposits);
+            $response = (new BaseResource(true, 'Total deposit data', $total_deposits))->response();
             return $response;
 
         } catch (\Exception $e) {
