@@ -30,7 +30,7 @@ class UserFactory extends Factory
             'email'             => fake()->unique()->safeEmail(),
             'password_hash'     => static::$password ??= Hash::make('password'),
             'status'            => 'active',
-            'user_role_id'      => '103bba1a-4174-4788-9052-4ca4098fb4c1',
+            'user_role_id'      => 'd9b5390c-f4ba-4235-b1e3-40c70a5f2dfd',
             'created_by'        => '00000000-0000-0000-0000-000000000000',
             'updated_by'        => '00000000-0000-0000-0000-000000000000',
         ];
