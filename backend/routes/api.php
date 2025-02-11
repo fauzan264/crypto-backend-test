@@ -15,4 +15,8 @@ Route::prefix('v1')->group(function() {
     Route::prefix('transaction_status')->group(function() {
         Route::post('/', [TransactionStatusController::class, 'store']);
     });
+
+    Route::prefix('user_status')->group(function() {
+        Route::post('/', [TransactionStatusController::class, 'store']);
+    });
 });
