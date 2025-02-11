@@ -28,7 +28,7 @@ class StatsController extends Controller
                     'success'       => false,
                     'message'       => 'Failed to fetch total registered data.',
                     'errors'        => $validator->errors(),
-                ], 400);
+                ], 422);
             }
 
             $month = $request->query('month', date('m'));
