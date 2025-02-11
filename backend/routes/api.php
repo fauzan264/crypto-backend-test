@@ -3,8 +3,7 @@
 use App\Http\Controllers\Api\StatsController;
 use App\Http\Controllers\Api\TransactionStatusController;
 use App\Http\Controllers\Api\TransactiontypeController;
-
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\UserRoleController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function() {
@@ -23,5 +22,9 @@ Route::prefix('v1')->group(function() {
 
     Route::prefix('transaction_types')->group(function() {
         Route::post('/', [TransactiontypeController::class, 'store']);
+    });
+
+    Route::prefix('user_roles')->group(function() {
+        Route::post('/', [UserRoleController::class, 'store']);
     });
 });
